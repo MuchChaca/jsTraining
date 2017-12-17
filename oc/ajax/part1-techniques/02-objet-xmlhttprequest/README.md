@@ -22,6 +22,72 @@ A l'heure actuelle, les navigateurs récents (IE7, FF2, Opera 9, Safari...) impl
   * <img src="https://user.oc-static.com/files/108001_109000/108805.gif" target="_blank"> [XMLHttpRequest](https://www.w3.org/TR/XMLHttpRequest/)
 
 ## Instancier un objet XHR
+Pour instancier un objet XHR, on procede de la meme maniere que pour n'importe quel objet JavaScript a savoir avec le mot-cle ``new``.
+```js
+var xhr = new XMLHttpRequest();
+```
+Les versions d'Internet Explorer inférieures à la version 7 requièrent toujours une instanciation via un contrôle [ActiveX](https://fr.wikipedia.org/wiki/ActiveX).  
+Il y a deux façons d'instancier un objet XHR avec un contrôle ActiveX et elles dépendent de la version d'XMLHTTP utilisée.  
+On va utiliser un ``try ... catch``, l'instanciation indiquee dans le ``try`` etant la plus recente:  
+```js
+try{
+	var xhr = new ActiveXObject("Msxml2.XMLHTTP");
+}catch(e){
+	var xhr = new ActiveXObject("Microsoft.XMLHTTP");
+}
+```
+Pour faire un script homogene, on rassemble le tout en prenant soin de tester la prise en charge des differentes methodes d'instanciation:  
+On peut meme utiliser une fonction qui retourne l'objet XHR instancie, ce qui simplifie les choses:  
+```js
+function getXMLHttpRequest() {
+	var xhr = null;
+	
+	if (window.XMLHttpRequest || window.ActiveXObject) {
+		if (window.ActiveXObject) {
+			try {
+				xhr = new ActiveXObject("Msxml2.XMLHTTP");
+			} catch(e) {
+				xhr = new ActiveXObject("Microsoft.XMLHTTP");
+			}
+		} else {
+			xhr = new XMLHttpRequest(); 
+		}
+	} else {
+		alert("Votre navigateur ne supporte pas l'objet XMLHTTPRequest...");
+		return null;
+	}
+	
+	return xhr;
+}
+```
+> Pour la suite cette fonction sera placé dans un fichier nommé oXHR.js pour ne pas devoir la réécrire à chaque fois et ainsi alléger la lecture des codes.  
+
+Par la suite, pour instancier un objet XHR, il suffira de faire :
+```js
+var xhr = getXMLHttpRequest();
+```  
+## Envoi d'une requete HTTP
+> *cf. oc/ajax/02-objet-xmlhttprequest/envoi-req.js*
+### Definir et envoyer
+Dans un premier temps, il faut définir les modalités d'envoi avec la méthode ``open``, et on l'enverra ensuite avec la méthode ``send`` :  
+```js
+var xhr = getXMLHttpRequest(); // Voyez la fonction getXMLHttpRequest() définie dans la partie précédente
+
+xhr.open("GET", "handlingData.php", true);
+xhr.send(null);
+```  
+``open`` s'utilise de cette facon: **``open(sMethod, sUrl, bAsync)``**  
+* ``sMethod`` : la methode de transfer : GET ou POST;
+* ``sUrl`` : la page qui donnera suite a la requete. Ca peut etre une page dynamique (PHP, CFM, ASP) ou une page statique(TXT, XML, ...);
+* ``bAsync`` : definit si le mode de transfert est asynchrone ou synchrone. Dans ce cas, il est a ``true``. Ce parametre est optionnel et vaut ``true`` par defaut, mais il est courant de le definir quand meme.
+  
+En cas d'utilisation de la methode POST, on doit absolument changer le type MIME de la requete avec la methode ``setRequestHeader``, sinon le serveur ignorera la requete :
+```js
+xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+```
+> Cette derniere ligne doit etre placee apres la ligne contenant la methode ``open``!  
+### Passer des variables
+
 
 -----------
   
