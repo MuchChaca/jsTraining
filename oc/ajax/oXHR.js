@@ -1,3 +1,4 @@
+// getXMLHttpRequest returns the XMLHttpRequest object
 function getXMLHttpRequest() {
 	var xhr = null;
 	

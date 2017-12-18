@@ -87,8 +87,91 @@ xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
 ```
 > Cette derniere ligne doit etre placee apres la ligne contenant la methode ``open``!  
 ### Passer des variables
+Il est possible de passer des variables au serveur.
 
+**GET** : les variables sont transmises directement dans l'URL:
+```js
+xhr.open("GET", "handlingData.php?variable1=truc&variable2=bidule", true);
+xhr.send(null);
+```
 
+**POST** : il faut specifier les variables dans l'argument de ``send`` :
+```js
+xhr.open("POST", "handlingData.php", true);
+xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+xhr.send("variable1=truc&variable2=bidule");
+```
+
+### Proteger les caracteres
+Pour conserver les caracteres speciaux et les espaces, on utilise la fonction globale **``encodeURIComponent``**, comme ceci:
+```js
+var sVar1 = encodeURIComponent("contenu avec des espaces");
+var sVar2 = encodeURIComponent("je vois que vous êtes un bon élève... oopa !");
+
+xhr.open("GET", "handlingData.php?variable1=" + sVar1 + "&variable2= " + sVar2, true);
+xhr.send(null);
+```
+
+## Traitement cote serveur
+### Une page PHP
+La page se comporte comme une page PHP normale. La recuperation des variables se fait via $_GET ou $_POST. Il faut penser a la securite, quelqu'un pourrait l'appeler directement sans passer par l'appel via XMLHttpRequest (il peut donc mettre directementl'URL de la page):
+```php
+<?php
+
+header("Content-Type: text/plain"); // Utilisation d'un header pour spécifier le type de contenu de la page. Ici, il s'agit juste de texte brut (text/plain). 
+
+$variable1 = (isset($_GET["variable1"])) ? $_GET["variable1"] : NULL;
+$variable2 = (isset($_GET["variable2"])) ? $_GET["variable2"] : NULL;
+
+if ($variable1 && $variable2) {
+	// Faire quelque chose...
+	echo "OK";
+} else {
+	echo "FAIL";
+}
+
+?>
+```
+
+## Recuperation de donnees
+### Le changement d'etat
+Lorsque l'on envoie une requete via XMLHttpRequest, celle-ci passe par plusieurs etats differents:
+* **0 :** L'objet XHR a été créé, mais pas encore initialisé (la méthode ``open`` n'a pas encore été appelée)
+* **1 :** L'objet XHR a été créé, mais pas encore envoyé (avec la méthode ``send``)
+* **2 :** La méthode ``send`` vient d'être appelée
+* **3 :** Le serveur traite les informations et a commencé à renvoyer des données
+* **4 :** Le serveur a fini son travail, et toutes les données sont réceptionnées
+
+Pour detecter les changements d'etats des requetes on utilise la propriete ``onreadystatechange``, et a chaque changement d'etat (state) on regarde lequel il s'agit:
+```js
+var xhr = getXMLHttpRequest();
+
+xhr.onreadystatechange = function() {
+	// Serveur a tout renvoye
+	if (xhr.readyState == 4 && (xhr.status == 200 || xhr.status == 0)) {
+		alert("OK"); // C'est bon \o/
+	}
+};
+
+xhr.open("GET", "handlingData.php", true);
+xhr.send(null);
+```
+On utilise ``readyState`` pour connaitre l'etat de la requete. On verifie aussi le code d'etat (comme 404 pour les pages non trouvees) pour verifier si tout s'est bien passe. 
+Pour cela on utilise la propriete ``status``. Si elle vaut **200** ou **0** (aucune reponse pour les tests en local), tout est OK.
+
+### Recuperer les donnees
+Il suffit d'utiliser les deux proprietes disponibles:
+* **``responseText`` :** pour recuperer les donnees sous forme de texte brut
+* **``esponseXML`` :** pour recuperer les donnees sous forme d'arbre XML
+
+**Un ``alert`` simple**
+```js
+xhr.onreadystatechange = function() {
+        if (xhr.readyState == 4 && (xhr.status == 200 || xhr.status == 0)) {
+                alert(xhr.responseText); // Données textuelles récupérées
+        }
+};
+```
 -----------
   
 <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d3/Logo_jQuery.svg/2000px-Logo_jQuery.svg.png" width=38%><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a1/AJAX_logo_by_gengns.svg/1280px-AJAX_logo_by_gengns.svg.png" width=38%><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/99/Unofficial_JavaScript_logo_2.svg/2000px-Unofficial_JavaScript_logo_2.svg.png" width=17%>

@@ -1,5 +1,3 @@
-<script src="../oXHR.js"></script>
-
 var xhr = getXMLHttpRequest();
 
 // definition des modalites d'envoi avec la methode 'open'
