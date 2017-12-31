@@ -1,0 +1,28 @@
+<!-- index.html -->
+<!DOCTYPE html>
+<html ng-app="store">
+	<head>
+		<link rel="stylesheet" type="text/css" href="assets/css/bootstrap.min.css" />
+	</head>
+
+	<body ng-controller="StoreController as store">
+		<!-- Scripts -->
+		<script type="text/javascript" src="assets/js/angular.min.js"></script>
+		<script type="text/javascript" src="assets/js/app.js"></script>
+		<!-- //Scripts -->
+
+		<!-- Code -->
+
+		<!-- Gems -->
+		<div  ng-repeat="product in store.products">
+			<h1>{{product.name}}</h1>
+			<em class="pull-right">${{product.price}}</em>
+			<p>{{product.description}}</p>
+			<button ng-show="product.canPurchase">Add to cart</button>
+			<hr>
+		</div>
+		<!-- //Gems -->
+
+		<!-- //Code -->
+	</body>
+</html>

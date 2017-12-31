@@ -146,7 +146,7 @@ We are going to wrap the entire app into a **closure** like so:
 The slide:  
 <img src="https://image.ibb.co/ksbZ9w/slide_controller_angularjs.png" alt="Slide" title="Slide" height="auto">
 
-We can place our gem into the **closure**. Now from inside the controller we need to set this gem equal to a proprity of this controller so:
+We can place our gem into the **closure**. Now from inside the controller we need to set this gem equal to a property of this controller so:
 ```js
 (function(){
 	var app = angular.module('store', [ ]);
@@ -170,6 +170,83 @@ We can place our gem into the **closure**. Now from inside the controller we nee
 <img src="https://image.ibb.co/bVQrNG/slide_controller_bf_angularjs.png">  
 
 <img src="https://image.ibb.co/hhNSwb/slide_controller_af_angularjs.png">
+
+# Adding a button
+First, we add a new key:value to our gem:
+```js
+var gem = {
+	name: 'Dodecahedron',
+	price: 2.95,
+	description: '. . .',
+	canPurchase: false,
+}
+```
+```html
+<!-- Gems -->
+<div ng-controller="StoreController as store">
+	<h1>{{store.product.name}}</h1>
+	<em class="pull-right">${{store.product.price}}</em>
+	<p>{{store.product.description}}</p>
+	<button>Add to cart</button> <!-- We only want this when ``canPurchase`` is true -->
+</div>
+<!-- //Gems -->
+```
+We use the ``ng-show`` directive and specify an expression:
+```html
+<!-- Gems -->
+<div ng-controller="StoreController as store">
+	<h1>{{store.product.name}}</h1>
+	<em class="pull-right">${{store.product.price}}</em>
+	<p>{{store.product.description}}</p>
+	<button ng-show="store.product.canPurchase">Add to cart</button>
+</div>
+<!-- //Gems -->
+```
+
+Now lets add another property: ``soldOut``. If the gem is soldOut, we don't want it to be shown on the page.
+<img src="https://image.ibb.co/mfau9w/ng_hide_directeve_bf_angularjs.png">  
+With ng-hide:
+<img src="https://image.ibb.co/dM0Y2G/actual_ng_hide_angularjs.png">  
+
+## Multiple Produtcs
+We change ``gem`` into ``gems``
+```js
+app.controller('StoreController', function(){
+	this.products = gems;
+});
+
+var gems = [
+	{
+		name: 'Dodecahedron',
+		price: 2.95,
+		description: 'Some gems have hidden values qualities beyond their luster, beyond their shine... Dodeca is one of those gems.',
+		canPurchase: false,
+	},
+	{
+		name: 'Pentagonal Gem',
+		price: 5.95,
+		description: '. . .',
+		canPurchase: true,
+	}
+];
+```
+```html
+<!-- Gems -->
+<div  ng-repeat="product in store.products">
+	<h1>{{product.name}}</h1>
+	<em class="pull-right">${{product.price}}</em>
+	<p>{{product.description}}</p>
+	<button ng-show="product.canPurchase">Add to cart</button>
+	<hr>
+</div>
+<!-- //Gems -->
+```
+
+# So far:
+<img src="https://image.ibb.co/c9L82G/so_far_angular_lvl1.png">
+
+
+
 
 
 
