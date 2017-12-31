@@ -155,6 +155,65 @@ where:
 * ``url`` is the name of the PHP page used for the update
 * ``param`` is a string with one of many parameters/values. For example if ``param`` is "id=5, p=14" and ``url`` is ``http://site.fr/page.php``, the page used for the update will be ``http://site.fr/page.php?id=5&p=14``.
 
+Example with:
+```html
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Ajax - Load</title>
+  </head>
+
+  <body>
+    <input type="text" id="ref">
+    <button id="action">Afficher</button><br />
+    <div id="r">Entrez un nombre compris entre 1 et 10 pour afficher un proverbe chinois</div>
+
+    <script src="jquery.js"></script>
+    <script>
+      $(function() {
+        $('#action').click(function() {
+          var param = 'l=' + $('#ref').val();
+          $('#r').load('http://www.proverbes.php',param);
+        });  
+      });
+      </script>
+  </body>
+</html>
+```
+
+The PHP:
+```PHP
+<?php
+$proverbe = array("On ne rassasie pas un chameau en le nourrissant à la cuillère.",
+                  "Connaître son ignorance est la meilleure part de la connaissance.",
+                  "Une maison en paille où l'on rit, vaut mieux qu'un palais où l'on pleure.",
+                  "Le vrai voyageur ne sait pas où il va.",
+                  "Point n'est besoin d'élever la voix quand on a raison.",
+                  "Un ami c'est une route, un ennemi c'est un mur.",
+                  "Un peu de parfum demeure toujours sur la main qui te donne des roses.",
+                  "Si élevé que soit l'arbre, ses feuilles tombent toujours à terre.",
+                  "Si ce que tu as à dire n'est pas plus beau que le silence, tais toi.",
+                  "Trois coupes de vin font saisir une doctrine profonde.");
+$l=$_GET["l"];
+if (($l != "") && ($l>0) && ($l<11))
+{
+  echo "<u>Proverbe chinois N° ".$l."</u><br><br>";
+  echo "<b>".$proverbe[$l-1]."</b>";
+}    
+else
+  echo "<font color=red>Entrez un nombre compris entre 1 et 10 !</font>";  
+?>
+```
+
+> It is impossible to print data from another website. The PHP process has to be on the same host than the jQuery
+
+### Second form of ``load()``
+We can pass an object to the second argument of the method ``load()``. For example, we can give a couple of params/values using it like so:
+```js
+$('sel').load('http://www.site.com/page.php',{ id:50, nom: 'durand'});
+```
+
 
 -----------
 
