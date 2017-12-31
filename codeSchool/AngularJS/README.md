@@ -83,6 +83,44 @@ Flatland Store
 </html>
 ```
 
+# Modules
+- Where we write pieces of the AngularJS application.  
+It is how we keep the code encapsulated.  
+- Makes the code more maintainable, testable, and readable.
+- Where we define all the dependencies for the application.
+
+<img src="https://image.ibb.co/dxvSUw/modules_js.png" height="150px">
+
+# Our first module
+
+<img src="https://image.ibb.co/mDYgpw/first_module_angularjs.png" height="150px">
+
+This piece of code is going to live inside an app.js file. So we will need to include that in our ``index.html``.  
+We also need to add the ``ng-app`` directive to the ``<html`` tag:
+
+```html
+<!-- ... -->
+<html ng-app="store">
+	<head>
+		<link rel="stylesheet" type="text/css" href="assets/css/bootstrap.min.css" />
+	</head>
+	<body>
+		<script type="text/javascript" src="assets/js/angular.min.js"></script>
+		<script type="text/javascript" src="assets/js/app.js"></script>
+	</body>
+</html>
+```
+This directive create an application by runing the ``app.js`` module.  
+So inside the ``<html>``, we can start runing expressions.
+
+# Expressions
+Allows the insertion of dynamic values into the HTML.
+
+## Numerical Operations
+<img src="https://image.ibb.co/iawbpw/expressions_angularjs.png" height="150px">
+
+> More [expressions]("http://docs.angularjs.org/expression")
+
 
 
 ---------------------
