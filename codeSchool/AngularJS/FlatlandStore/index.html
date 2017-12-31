@@ -12,9 +12,15 @@
 		<!-- //Scripts -->
 
 		<!-- Code -->
-		<p>
-			{{"hello" + " you"}}
-		</p>
+
+		<!-- Gems -->
+		<div ng-controller="StoreController as store">
+			<h1>{{store.product.name}}</h1>
+			<em class="pull-right">${{store.product.price}}</em>
+			<p>{{store.product.description}}</p>
+		</div>
+		<!-- //Gems -->
+
 		<!-- //Code -->
 	</body>
 </html>

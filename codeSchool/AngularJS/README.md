@@ -121,6 +121,56 @@ Allows the insertion of dynamic values into the HTML.
 
 > More [expressions]("http://docs.angularjs.org/expression")
 
+# Controller
+Controllers are where we define our app's behavior by defining functions and values.
+## Working with data
+Considering our 'gem', a JavaScript object:
+```js
+var gem = {
+	name: 'Dodecahedron',
+	price: 2.95,
+	description: '. . .',
+}
+```
+
+We are going to wrap the entire app into a **closure** like so:
+```js
+(function(){
+	var app = angular.module('store', [ ]);
+
+	app.controller('StoreController', function(){
+		//
+	});
+})();
+```
+The slide:  
+<img src="https://image.ibb.co/ksbZ9w/slide_controller_angularjs.png" alt="Slide" title="Slide" height="auto">
+
+We can place our gem into the **closure**. Now from inside the controller we need to set this gem equal to a proprity of this controller so:
+```js
+(function(){
+	var app = angular.module('store', [ ]);
+
+	app.controller('StoreController', function(){
+		this.product = gem;
+	});
+
+	var gem = {
+		name: 'Dodecahedron',
+		price: 2.95,
+		description: '. . .',
+	}
+})();
+```
+
+> How to get access to this data from inside our HTML ?
+
+<img src="https://image.ibb.co/f0BO2G/ourgem_angularjs.png" >  
+
+<img src="https://image.ibb.co/bVQrNG/slide_controller_bf_angularjs.png">  
+
+<img src="https://image.ibb.co/hhNSwb/slide_controller_af_angularjs.png">
+
 
 
 ---------------------
