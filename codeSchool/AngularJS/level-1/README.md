@@ -1,4 +1,4 @@
-# AngularJS - CodeSchool
+# AngularJS - CodeSchool - LEVEL 1
 [<img src="https://www.codeschool.com/assets/pages/brand/downloads/brand-horizontal-tagline-a0192e1b76e417c6083a0f1885bea8ab24cae64771aa9d719fe45f2ba7bf4856.png" title="CodeSchool" alt="CodeSchool" width=50%>]("https://www.codeschool.com/")
 
 # Introduction
