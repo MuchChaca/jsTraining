@@ -2,7 +2,10 @@
 <!DOCTYPE html>
 <html ng-app="store">
 	<head>
+		<!-- CSS -->
 		<link rel="stylesheet" type="text/css" href="assets/css/bootstrap.min.css" />
+		<link rel="stylesheet" type="text/css" href="assets/css/styles.css" />
+		<!-- //CSS -->
 	</head>
 
 	<body ng-controller="StoreController as store">
@@ -65,24 +68,27 @@
 							<cite class="clearfix">by : {{review.author}}</cite>
 						</blockquote>
 						<!-- Form -->
-						<form name="reviewForm">
+						<form name="reviewForm" ng-controller="ReviewController as reviewCtrl"
+														ng-submit="reviewForm.$valid && reviewCtrl.addReview(product)" novalidate>
 							<!-- LivePreview -->
 							<div class="form-group">
 							<h3>Submit a review</h3>
 							<blockquote>
-								<b>{{review.stars}} Stars</b>
-								{{review.body}}
-								<cite class="clearfix">by: {{review.author}}</cite>
+								<b>{{reviewCtrl.review.stars}} Stars</b>
+								{{reviewCtrl.review.body}}
+								<cite class="clearfix">by: {{reviewCtrl.review.author}}</cite>
 							</blockquote>
 							<!-- ActualForm -->
-							<select class="form-control" ng-model="review.stars" ng-options="stars for stars in [5,4,3,2,1]"  title="Stars">
+							<select class="form-control" ng-model="reviewCtrl.review.stars" ng-options="stars for stars in [5,4,3,2,1]"  title="Stars" required>
 								<option value="">Rate the Product</option>
 							</select>
 							<br>
-							<textarea class="form-control" ng-model="review.body" placeholder="Write a short review of the product..." title="Review"></textarea>
+							<textarea class="form-control" ng-model="reviewCtrl.review.body" placeholder="Write a short review of the product..." title="Review" required></textarea>
 							<br>
-							<input class="form-control" id="inputAuthor" type="email" ng-model="review.author" placeholder="jimmyDean@example.org" title="Email">
+							<input class="form-control" id="inputAuthor" type="email" ng-model="reviewCtrl.review.author" placeholder="jimmyDean@example.org" title="Email" required>
 							<br>
+							<!-- DEBUGING-CODE (prints forms validity) -->
+							<div>reviewForm is {{reviewForm.$valid}}</div>
 							<input class="btn btn-primary mb-2 pull-right" type="submit" value="Submit">
 						</div>
 						</form>

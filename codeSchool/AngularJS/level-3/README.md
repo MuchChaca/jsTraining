@@ -137,8 +137,132 @@ What color would you like?
 <input ng-model="review.color" type="radio" value="green"> Green
 ```
 
-## Actually adding reviews
+# Actually adding reviews
+## Organizing the code
+We notice that the review variable, we didn't define it anywhere.
+It's good practice to define it. We could use ``ng-init`` but we'ere better off creating a controller.  
+It is better to do initialization inside a **<u>Controller</u>**. So we create a **Controller** for ou **Reviews**.  
+```js
+// Review Controller
+app.controller('ReviewController', function(){
+	this.review = {};
+});
+```
+```html
+<form name="reviewForm" ng-controller="ReviewController as reviewCtrl">
+	<!-- LivePreview -->
+	<div class="form-group">
+	<h3>Submit a review</h3>
+	<blockquote>
+		<b>{{reviewCtrl.review.stars}} Stars</b>
+		{{reviewCtrl.review.body}}
+		<cite class="clearfix">by: {{reviewCtrl.review.author}}</cite>
+	</blockquote>
+	<!-- ActualForm -->
+	<select class="form-control" ng-model="reviewCtrl.review.stars" ng-options="stars for stars in [5,4,3,2,1]"  title="Stars">
+		<option value="">Rate the Product</option>
+	</select>
+	<br>
+	<textarea class="form-control" ng-model="reviewCtrl.review.body" placeholder="Write a short review of the product..." title="Review"></textarea>
+	<br>
+	<input class="form-control" id="inputAuthor" type="email" ng-model="reviewCtrl.review.author" placeholder="jimmyDean@example.org" title="Email">
+	<br>
+	<input class="btn btn-primary mb-2 pull-right" type="submit" value="Submit">
+</div>
+</form>
+```
+## Make the form work
+**Using ``ng-submit`` to make the form work**  
+``ng-submit`` allows to call a function when the form is submitted.
+```js
+// Review Controller
+app.controller('ReviewController', function(){
+	this.review = {};
+	this.addReview = function(prod){
+		prod.reviews.push(this.review);
+	};
+});
+```
+```html
+<form name="reviewForm" ng-controller="ReviewController as reviewCtrl"
+								ng-submit="reviewCtrl.addReview(product)">
+<!-- . . . -->
+```
+## Reset the form & clear the live preview as well
+We just empty ``this.review``:
+```js
+// Review Controller
+app.controller('ReviewController', function(){
+	this.review = {};
+	this.addReview = function(prod){
+		prod.reviews.push(this.review);
+		this.review = {};
+	};
+});
+```
+> If we refresh the page, the reviews get reset!
+> We're not saving reviews anywhere yet...
 
+# Validations
+*AngularJS has some great client side Validations we can use our directives.*
+## Default HTML Validation
+We need to turn off the default **HTML Validation**:
+```html
+<!-- Form -->
+<form name="reviewForm" ng-controller="ReviewController as reviewCtrl"
+								ng-submit="reviewCtrl.addReview(product)" novalidate>
+```
+## Required
+Mark the **required** fields:
+```html
+<!-- . . . -->
+<select class="form-control" ng-model="reviewCtrl.review.stars" ng-options="stars for stars in [5,4,3,2,1]"  title="Stars" required>
+<!-- . . . -->
+<textarea class="form-control" ng-model="reviewCtrl.review.body" placeholder="Write a short review of the product..." title="Review" required></textarea>
+<!-- . . . -->
+<input class="form-control" id="inputAuthor" type="email" ng-model="reviewCtrl.review.author" placeholder="jimmyDean@example.org" title="Email" required>
+<!-- DEBUGING-CODE (prints forms validity) -->
+<div>reviewForm is {{reviewForm.$valid}}</div>
+<input class="btn btn-primary mb-2 pull-right" type="submit" value="Submit">
+```
+> ``{{reviewForm.$valid}}``
+* ``reviewForm`` is the name of the form
+* ``$valid`` for referencing a property on the form, this is a built-in property
+
+### We don't want the form to submit when it's invalid.  
+We only want the ``addReview()`` to be called if ``reviewForm.$valid`` is ``true``:
+```js
+<!-- Form -->
+<form name="reviewForm" ng-controller="ReviewController as reviewCtrl"
+								ng-submit="reviewForm.$valid && reviewCtrl.addReview(product)" novalidate>
+```
+
+### Give a hint to the validity of the form
+<img src="https://image.ibb.co/nAX5jw/the_input_classes.png">
+So lets highlight form field using classes after we start typing, ``ng-dirty`` showing if a field is **valid** or **invalid**.  
+``ng-valid`` ``ng-invalid``:
+```CSS
+.ng-invalid.ng-dirty {
+	border-color: #FA787E;
+}
+
+.ng-valid.ng-dirty {
+	border-color: #78FA89;
+}
+```
+### HTML5-based type Validations
+#### Web forms usually have rules around email valid input
+* **AngularJS** has built-in validations for common input types:
+```HTML
+<input type='email' name='email'>
+```
+```HTML
+<input type='url' name='homepage'>
+```
+```HTML
+<input type='number' name='quantity'>
+<!-- Can also define min=1 and max=10 for example -->
+```
 
 
 

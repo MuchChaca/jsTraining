@@ -1,10 +1,13 @@
 (function(){
+	// The app
 	var app = angular.module('store', [ ]);
 
+		// Store Controller
 	app.controller('StoreController', function(){
 		this.products = gems;
 	});
 
+	// Panel Controller
 	app.controller('PanelController', function(){
 		this.tab = 1;
 		this.selectTab = function(setTab){
@@ -15,6 +18,16 @@
 		};
 	});
 
+	// Review Controller
+	app.controller('ReviewController', function(){
+		this.review = {};
+		this.addReview = function(prod){
+			prod.reviews.push(this.review);
+			this.review = {};
+		};
+	});
+
+	// Gems is an array of 'gem'
 	var gems = [
 		{
 			name: 'Dodecahedron',
