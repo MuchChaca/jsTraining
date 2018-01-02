@@ -27,6 +27,17 @@
 		};
 	});
 
+	// Directives
+	//	// dash in HTML will translate into CamelCase in JavaScript
+	// <product-title></product-title>
+	app.directive('productTitle', function(){
+		return {
+			// returns a directive definition object
+			restrict: 'E', // type of directive E => Element
+			templateUrl: 'templates/product-title.html'
+		};
+	});
+
 	// Gems is an array of 'gem'
 	var gems = [
 		{

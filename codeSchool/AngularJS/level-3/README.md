@@ -1,4 +1,4 @@
-# AngularJS - CodeSchool - LEVEL 2
+# AngularJS - CodeSchool - LEVEL 3
 [<img src="https://www.codeschool.com/assets/pages/brand/downloads/brand-horizontal-tagline-a0192e1b76e417c6083a0f1885bea8ab24cae64771aa9d719fe45f2ba7bf4856.png" title="CodeSchool" alt="CodeSchool" width=50%>]("https://www.codeschool.com/")
 
 > *Level 3: Forms, Models, and Validations*
